@@ -3,6 +3,13 @@ import { useEffect, useState } from "react";
 // Guarantees a clean, absolute backend URL starting with https://
 const getApiUrl = () => {
   let url = import.meta.env.VITE_API_URL || "https://my-backend-practice.vercel.app";
+  
+  // Extract a clean http/https URL if markdown syntax or brackets exist
+  const match = url.match(/https?:\/\/[^\s\)\\]+/);
+  if (match) {
+    return match[0].replace(/\/$/, "");
+  }
+
   url = url.trim().replace(/\/$/, "");
   if (!url.startsWith("http://") && !url.startsWith("https://")) {
     url = `https://${url}`;
